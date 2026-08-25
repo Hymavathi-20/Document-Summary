@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Summary Assistant</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="badge">100% Client-Side NLP</div>
+      <h1>📄 Document Summary Assistant</h1>
+      <p>Extract instant overviews and key takeaways from PDFs or scanned images.</p>
+    </header>
+
+    <main class="workspace">
+      <!-- Upload Card -->
+      <section class="card upload-card">
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" accept=".pdf,image/png,image/jpeg" hidden />
+          <div class="dropzone-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <h3>Click or Drag & Drop File Here</h3>
+          <p>Supports PDF files and PNG/JPG scanned images</p>
+          <button class="btn btn-secondary" type="button" id="browseBtn">Browse Files</button>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+          <label>Summary Length</label>
+          <div class="segmented-control">
+            <input type="radio" name="length" id="short" value="short" />
+            <label for="short">Short</label>
+            
+            <input type="radio" name="length" id="medium" value="medium" checked />
+            <label for="medium">Medium</label>
+            
+            <input type="radio" name="length" id="long" value="long" />
+            <label for="long">Long</label>
+          </div>
+          <!-- New Generate Button -->
+            <button class="btn btn-primary" id="generateBtn" style="display: none;">
+                ⚡ Generate Summary
+            </button>
+        </div>
+      </section>
+
+      <!-- Processing Progress State -->
+      <section class="card progress-card" id="progressCard" style="display: none;">
+        <div class="progress-header">
+          <span id="progressStatus">Reading document...</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+      </section>
+
+      <!-- Output Dashboard -->
+      <section class="results-grid" id="resultsGrid" style="display: none;">
+        <!-- Overview Card -->
+        <div class="card result-card">
+          <div class="card-header">
+            <h2>Overview</h2>
+            <span class="meta-tag" id="readingTimeSaved">Saved ~0 mins</span>
+          </div>
+          <div class="card-body">
+            <div id="overviewText" class="prose-text"></div>
+          </div>
+        </div>
+
+        <!-- Key Points Card -->
+        <div class="card result-card">
+          <div class="card-header">
+            <h2>Key Takeaways</h2>
+          </div>
+          <div class="card-body">
+            <ul id="keyPointsList" class="key-points-list"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- CDN Dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  
+  <!-- App Script -->
+  <script src="script.js"></script>
+</body>
+</html>
