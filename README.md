@@ -1,54 +1,132 @@
-# 📄 Document Summarizer JS
+# Document Summary Assistant
 
-A high-performance, 100% client-side text extraction and summarization engine built in pure JavaScript. It cleans raw document text by removing extraction noise (such as page numbers, citation IDs, OCR split-word errors, and diagram fragments) and generates natural prose overviews and key takeaways using a custom frequency-density scoring algorithm.
+Document Summary Assistant is a lightweight browser-based web application that extracts text from PDFs and images to generate structured overview summaries and key points.
 
-✨ Features
+🔗 **Live Demo:** [document-summariser.netlify.app](https://document-summarizer-assisstant.netlify.app/)
 
-* Upload via drag-and-drop or file picker
-* Works with PDFs and scanned images (PNG/JPG)
-* Multi-format extraction cleanup for PDF chunk tags, arXiv IDs, and line numbers
-* Advanced grammar and integrity filters to prune flowchart step labels and UI text
-* Choose summary length: Short / Medium / Long
-* Sentence scoring based on Term Frequency (TF) normalized by sentence length
-* Redundancy elimination using Jaccard Similarity token comparison
-* Loading states + progress bar during OCR
-* Mobile responsive
-* 100% client-side — your files never leave your device
+---
 
-🛠 Tech Stack
+## 💡 What it does
 
-| Layer | Technology | Purpose |
+Upload a PDF or an image of a document to extract text instantly and receive:
+
+* **Structured Overview**: A concise synthesis of the document's core content.
+* **Actionable Key Takeaways**: Bulleted highlights of critical points.
+* **Custom Control**: Manual summary generation across customizable length thresholds.
+* **Efficiency Metric**: Real-time estimation of reading time saved.
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+| :--- | :--- |
+| **PDF Extraction** | Extracts raw text directly from multi-page PDF files |
+| **Image Extraction** | Extracts text from standard image formats (`.jpg`, `.png`) |
+| **In-Browser OCR** | Powered by Tesseract.js v5 for client-side Optical Character Recognition |
+| **NLP Summarization** | Extractive scoring algorithm using Term Frequency (TF) normalized by length |
+| **Length Controls** | Granular summary targets: Short (~25%), Medium (~40%), and Long (~60%) |
+| **Key Points** | Formats main takeaways as concise, scannable bullet points |
+| **Manual Trigger** | Dedicated action button for full generation control |
+| **Time Saved Metric** | Estimates and displays overall reading time saved |
+| **Drag & Drop** | Native HTML drag-and-drop file upload zone |
+| **Privacy First** | 100% client-side processing — zero server uploads or external API calls |
+
+---
+
+## 🛠️ Technologies Used
+
+| Layer | Technology / Library | Usage |
 | :--- | :--- | :--- |
-| **Frontend** | HTML, CSS, JavaScript | Vanilla single-page app — no framework, no build step |
-| **PDF Extraction** | PDF.js | Parses raw text directly out of PDF files |
-| **OCR Engine** | Tesseract.js | Performs client-side OCR on scanned images |
-| **Summarization Engine** | Custom JavaScript Algorithm | Sanitizes text, filters sentence candidates, scores word density, and surfaces key points |
-| **Hosting** | Netlify | Free static application hosting |
+| **Frontend** | HTML5, CSS3, JavaScript (ES6+) | UI layout, CSS Grid/Flexbox dark theme, DOM manipulation |
+| **PDF Processing** | PDF.js | Client-side text stream parsing |
+| **OCR Processing** | Tesseract.js | In-browser image text extraction via Web Workers |
+| **Deployment** | Netlify | Static web hosting and continuous deployment |
 
-🧠 My Approach
+---
 
-I built this as a single-page, fully client-side app — fast to build, free to host, and simple to use.
+## ⚙️ How It Works
 
-1. **Extract raw text** — PDFs are parsed with PDF.js while scanned images run through Tesseract.js in the browser.
-2. **Sanitize & validate sentences** — Cleans OCR split words, strips citation IDs, and runs regex/POS checks to prune diagram labels and non-prose headers.
-3. **Score by density** — Calculates Term Frequency (TF) for key content words and scores each valid sentence normalized by sentence length ($\sqrt{L}$).
-4. **Generate overview** — Selects top-scoring sentences in chronological order while applying Jaccard Similarity to eliminate duplicate points.
-5. **Surface key points** — Pulls distinct standalone takeaways from the remaining scored sentence pool.
+```text
+ ┌──────────────┐     ┌───────────────────────┐     ┌────────────────────────┐     ┌────────────────┐
+ │ Upload File  │ ──> │    Text Extraction    │ ──> │ TF Sentence Scoring    │ ──> │ Render Results │
+ │ (PDF / Image)│     │ (PDF.js / Tesseract)  │     │ (Normalized by √L)     │     │ & Time Saved   │
+ └──────────────┘     └───────────────────────┘     └────────────────────────┘     └────────────────┘
+```
 
-This approach skips paid AI APIs entirely, so there is no backend needed and no running cost — while producing clean, noise-free summaries directly from the source text.
+### ⚙️ How It Works
 
-💻 Run It Locally
+1. **Upload**: Drop or select a PDF or image inside the file dropzone.
+2. **Text Extraction**:
+   * **PDFs**: Parsed via **PDF.js** to stream raw text items across pages.
+   * **Images**: Processed via **Tesseract.js** in a dedicated Web Worker thread.
+3. **Configuration**: Choose target summary density (Short, Medium, or Long).
+4. **Sentence Scoring Algorithm**:
+   * Text is cleaned of orphan headers and split into discrete sentence tokens.
+   * Sentences are evaluated using Term Frequency (TF) scoring normalized by length ($\sqrt{L}$) to prevent bias toward longer sentences.
+   * Top-ranked sentences are chronologically sorted to preserve contextual narrative flow.
+5. **Output**: Formatted overview paragraphs, key bullet points, and estimated time saved are dynamically rendered.
 
-No installation needed:
-1. Clone or download this repository.
-2. Open `index.html` directly in any web browser (or serve locally using VS Code Live Server).
+---
 
-That's it — everything runs client-side.
+### 📊 Summary Options
 
-🚀 What I'd Add Next
+| Option | Summary Target | Best Used For |
+| :--- | :--- | :--- |
+| **Short** | ~25% of document sentences | Quick executive summaries and quick scanning |
+| **Medium** | ~40% of document sentences | Balanced overview of key concepts and arguments |
+| **Long** | ~60% of document sentences | Comprehensive detailed breakdown of complex files |
 
-* Integrate dynamic TF-IDF scoring across multi-page document chunks
-* Offload heavy text processing to Web Workers to prevent UI freezing on large files
-* Support for `.docx` and `.txt` file formats
-* Downloadable summaries in PDF and Markdown format
-* Optional local LLM integration via WebGPU / Chrome Built-in AI for generative rephrasing
+---
+
+### 🔒 Privacy & Security
+
+* **Zero Data Transmission**: Text parsing, OCR operations, and NLP sentence scoring run entirely inside your browser instance.
+* **No Server Footprint**: No external APIs or server storage are used — your files never leave your device.
+
+---
+
+### 📁 Project Structure
+
+```text
+document-summary-assistant/
+├── index.html       # Application markup and UI layout
+├── styles.css       # Dark theme styles, responsive layouts, and animations
+├── script.js        # OCR, PDF parsing, and NLP summarization logic
+└── README.md        # Project documentation
+```
+
+## 💻 Local Development
+
+No Node.js dependencies, complex setup, or build tools required.
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/your-username/document-summary-assistant.git](https://github.com/your-username/document-summary-assistant.git)
+   cd document-summary-assistant
+   ```
+   ## 💻 Run the Application
+
+* **Option A:** Open `index.html` directly in any modern web browser.
+* **Option B:** Serve locally via Python:
+
+```bash
+python3 -m http.server 8000
+```
+
+Navigate to `http://localhost:8000` in your browser.
+
+---
+
+## 🚀 Future Roadmap
+
+- [ ] **Hybrid AI Summarization**: Add optional LLM integrations (or WebGPU-based models like WebLLM) for abstractive summarization.
+- [ ] **Expanded File Support**: Parse Microsoft Word (`.docx`) and plain text (`.txt`) files client-side.
+- [ ] **Batch Processing**: Upload and summarize multiple documents simultaneously with comparative insights.
+- [ ] **Export Capabilities**: Export generated summaries directly to `.md` or `.pdf` formats.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
